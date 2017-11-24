@@ -35,7 +35,6 @@ class UnitController():
         print(str(number_of_counties) + " | powiaty")
         print(str(number_of_city_counties) + " | miasto na prawach powiatu ")'''
         
-
     def count_counties(self, county_dict, county_type):
         county_counter = 0
         for key, value in county_dict.items():
@@ -75,10 +74,67 @@ class UnitController():
 
         return gmina_miejska_counter, gmina_wiejska_counter, gmina_miejsko_wiejska_counter, obszar_wiejski_counter, miasto_counter, delegatura_counter
 
+    """def get_cities(self, voivodeship):
+        for county_key, county in voivodeship.county_dict.items():
+            for community_key, community in county.community_dict.items():
+                if "miasto" in community.rgmi_dict.values():
+                    #print(community.name + " " + (str(len(community.name))))
+                    #print(list(len(communit))
+                    return (str(len(community.name)))"""
+
+    def get_cities(self, voivodeship):
+        cities_dict = {}
+        for county_key, county in voivodeship.county_dict.items():
+            for community_key, community in county.community_dict.items():
+                if "miasto" in community.rgmi_dict.values():
+                    #cities_dict = {}
+                    key_name = community.name
+                    value_len_name = str(len(community.name))
+                    #print(value_len_name)
+                    #cities_dict[community.name] = str(len(community.name))
+                    cities_dict.update({key_name: value_len_name})
+                    #print(cities_dict)
+                    #print(list(cities_dict.values()))
+                    #values = cities_dict.values()
+                    #print(values)
+                    #longest_cities = 0
+        longest_cities = 0            
+        for key in cities_dict:
+            #print(key)
+            #longest_cities = 0
+            if int(cities_dict[key]) > longest_cities:
+                longest_cities = int(cities_dict[key])
+                community = key
+                print(key)
+                #print(community.name)
+
+
+    """def get_cities(self, voivodeship):
+        cities_dict = {}
+        for county_key, county in voivodeship.county_dict.items():
+            for community_key, community in county.community_dict.items():
+                if "miasto" in community.rgmi_dict.values():
+                    #cities_dict = {}
+                    key_name = community.name
+                    value_len_name = str(len(community.name))
+                    cities_dict.update({key_name: value_len_name})
+                    #print(cities_dict)
+                    #print(list(cities_dict.values()))
+        cities_len = cities_dict.items()             
+        print(cities_len)
+        for city in cities_len:
+            max_len_city = cities_len[0]
+        print(max_len_city)"""        
+
+
+  
+
+
+
 unit_dao = UnitDao()
 voivodeship = unit_dao.import_data()
 unit_controller = UnitController()
 unit_controller.list_statistics(voivodeship)
 unit_controller.count_rgmis(voivodeship)
-
-
+unit_controller.get_cities(voivodeship)
+#unit_controller.get_longest_cities_names(unit_controller.get_cities(voivodeship))
