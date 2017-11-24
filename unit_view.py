@@ -11,7 +11,7 @@ class UnitView():  # TBD
         print(ptable)
 
     @staticmethod
-    def display_menu(collection):
+    def display_collection(collection):
         for number, element in enumerate(collection):
             print(number + 1, element)
 

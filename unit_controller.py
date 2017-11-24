@@ -83,60 +83,26 @@ class UnitController():
 
         return gmina_miejska_counter, gmina_wiejska_counter, gmina_miejsko_wiejska_counter, obszar_wiejski_counter, miasto_counter, delegatura_counter
 
-    """def get_cities(self, voivodeship):
-        for county_key, county in voivodeship.county_dict.items():
-            for community_key, community in county.community_dict.items():
-                if "miasto" in community.rgmi_dict.values():
-                    #print(community.name + " " + (str(len(community.name))))
-                    #print(list(len(communit))
-                    return (str(len(community.name)))"""
-
-    """def get_cities(self, voivodeship):
-        cities_dict = {}
-        for county_key, county in voivodeship.county_dict.items():
-            for community_key, community in county.community_dict.items():
-                if "miasto" in community.rgmi_dict.values():
-                    #cities_dict = {}
-                    key_name = community.name
-                    value_len_name = str(len(community.name))
-                    #print(type(value_len_name))
-                    #cities_dict[community.name] = str(len(community.name))
-                    cities_dict.update({key_name: value_len_name})
-                    print(cities_dict)
-                    #print(cities_dict)
-                    #print(list(cities_dict.values()))
-                    #values = cities_dict.values()
-                    #print(values)
-                    #longest_cities = 0
-        longest_cities = 0            
-        for key in cities_dict:
-            print(key)
-            print(cities_dict[key])
-            if int(cities_dict[key]) > longest_cities:
-                longest_cities = int(cities_dict[key])
-                #print(longest_cities)
-                        #print(key)
-                        #longest_cities = 0
-
-                            #cities_dict[key] = key
-                    #print(key)
-                            #print(len(community))"""
-
     def get_cities(self, voivodeship):
-        cities_dict = {}
+        cities_list = []
+        longest_cities_list = []
+        NUMBER_OF_LONGEST_CITIES = 3
         for county_key, county in voivodeship.county_dict.items():
             for community_key, community in county.community_dict.items():
                 if "miasto" in community.rgmi_dict.values():
-                    key_name = community.name
-                    value_len_name = str(len(community.name))
-                    cities_dict.update({key_name: value_len_name})
-        cities_len = list(cities_dict.items()) 
-        longest_cities = 0            
-        for key in cities_dict:
-            if int(cities_dict[key]) > longest_cities:
-                longest_cities = int(cities_dict[key])
-        print(longest_cities)
-        print(key)
+                    cities_list.append(community.name)
+        
+        for i in range(0, NUMBER_OF_LONGEST_CITIES):
+            longest_city_len = 0
+            longest_city = ""
+            for city in cities_list:
+                if len(city) > longest_city_len:
+                    longest_city_len = len(city)
+                    longest_city = city
+            longest_cities_list.append(longest_city)
+            cities_list.remove(longest_city)
+
+        return longest_cities_list
 
     def display_menu(self):
         self.view.display_menu(self.MENU_OPTIONS)
@@ -145,7 +111,7 @@ class UnitController():
         to_continue = True
         correct_choices = ["1", "2", "3", "4", "5", "6"]
         while to_continue:
-            UnitView.display_menu(self.MENU_OPTIONS)
+            UnitView.display_collection(self.MENU_OPTIONS)
             user_choice = self.unit_view.user_input("Enter your choice (1, 2, 3, 4, 5, 6): ")
             os.system("clear")
             if user_choice not in correct_choices:
@@ -154,7 +120,10 @@ class UnitController():
                 list_stats = unit_controller.list_statistics(voivodeship)
                 self.unit_view.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
             elif user_choice == "2":
-                pass
+                longest_cities = self.get_cities(voivodeship)
+                UnitView.display_text("Three longest cities are:")
+                UnitView.display_collection(longest_cities)
+                UnitView.display_text("-------------------------\n")
             elif user_choice == "3":
                 pass
             elif user_choice == "4":
@@ -168,9 +137,9 @@ class UnitController():
 unit_dao = UnitDao()
 voivodeship = unit_dao.import_data()
 unit_controller = UnitController()
-#unit_controller.start()
-#unit_controller.list_statistics(voivodeship)
+unit_controller.start()
+unit_controller.list_statistics(voivodeship)
 unit_controller.count_rgmis(voivodeship)
 unit_controller.get_cities(voivodeship)
 
-#UnitView.display_menu(UnitController.MENU_OPTIONS)
+UnitView.display_collection(UnitController.MENU_OPTIONS)
