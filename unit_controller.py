@@ -104,6 +104,16 @@ class UnitController():
 
         return longest_cities_list
 
+    def get_county_with_largest_number_of_communities(self, voivodeship):
+        number_of_communities = 0
+        county_with_largest_number_of_communities = ""
+        for county_key, county in voivodeship.county_dict.items():
+            if len(county.community_dict.items()) > number_of_communities:
+                county_with_largest_number_of_communities = county.name
+                number_of_communities = len(county.community_dict.items())
+
+        return county_with_largest_number_of_communities
+
     def display_menu(self):
         self.view.display_menu(self.MENU_OPTIONS)
 
@@ -123,9 +133,10 @@ class UnitController():
                 longest_cities = self.get_cities(voivodeship)
                 UnitView.display_text("Three longest cities are:")
                 UnitView.display_collection(longest_cities)
-                UnitView.display_text("-------------------------\n")
+                UnitView.display_text("-------------------------")
             elif user_choice == "3":
-                pass
+                county_with_largest_number_of_communities = self.get_county_with_largest_number_of_communities(voivodeship)
+                UnitView.display_text("County with the largest number of communities is:\n" + county_with_largest_number_of_communities + "\n-------------------------")
             elif user_choice == "4":
                 pass
             elif user_choice == "5":
@@ -141,5 +152,6 @@ unit_controller.start()
 unit_controller.list_statistics(voivodeship)
 unit_controller.count_rgmis(voivodeship)
 unit_controller.get_cities(voivodeship)
+unit_controller.get_county_with_largest_number_of_communities(voivodeship)
 
 UnitView.display_collection(UnitController.MENU_OPTIONS)
