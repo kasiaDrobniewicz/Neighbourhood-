@@ -91,33 +91,6 @@ class UnitController():
                     #print(list(len(communit))
                     return (str(len(community.name)))"""
 
-    def get_cities(self, voivodeship):
-        cities_dict = {}
-        for county_key, county in voivodeship.county_dict.items():
-            for community_key, community in county.community_dict.items():
-                if "miasto" in community.rgmi_dict.values():
-                    #cities_dict = {}
-                    key_name = community.name
-                    value_len_name = str(len(community.name))
-                    #print(value_len_name)
-                    #cities_dict[community.name] = str(len(community.name))
-                    cities_dict.update({key_name: value_len_name})
-                    #print(cities_dict)
-                    #print(list(cities_dict.values()))
-                    #values = cities_dict.values()
-                    #print(values)
-                    #longest_cities = 0
-        longest_cities = 0            
-        for key in cities_dict:
-            #print(key)
-            #longest_cities = 0
-            if int(cities_dict[key]) > longest_cities:
-                longest_cities = int(cities_dict[key])
-                community = key
-                #print(key)
-                #print(community.name)
-
-
     """def get_cities(self, voivodeship):
         cities_dict = {}
         for county_key, county in voivodeship.county_dict.items():
@@ -126,14 +99,44 @@ class UnitController():
                     #cities_dict = {}
                     key_name = community.name
                     value_len_name = str(len(community.name))
+                    #print(type(value_len_name))
+                    #cities_dict[community.name] = str(len(community.name))
                     cities_dict.update({key_name: value_len_name})
+                    print(cities_dict)
                     #print(cities_dict)
                     #print(list(cities_dict.values()))
-        cities_len = cities_dict.items()             
-        print(cities_len)
-        for city in cities_len:
-            max_len_city = cities_len[0]
-        print(max_len_city)"""        
+                    #values = cities_dict.values()
+                    #print(values)
+                    #longest_cities = 0
+        longest_cities = 0            
+        for key in cities_dict:
+            print(key)
+            print(cities_dict[key])
+            if int(cities_dict[key]) > longest_cities:
+                longest_cities = int(cities_dict[key])
+                #print(longest_cities)
+                        #print(key)
+                        #longest_cities = 0
+
+                            #cities_dict[key] = key
+                    #print(key)
+                            #print(len(community))"""
+
+    def get_cities(self, voivodeship):
+        cities_dict = {}
+        for county_key, county in voivodeship.county_dict.items():
+            for community_key, community in county.community_dict.items():
+                if "miasto" in community.rgmi_dict.values():
+                    key_name = community.name
+                    value_len_name = str(len(community.name))
+                    cities_dict.update({key_name: value_len_name})
+        cities_len = list(cities_dict.items()) 
+        longest_cities = 0            
+        for key in cities_dict:
+            if int(cities_dict[key]) > longest_cities:
+                longest_cities = int(cities_dict[key])
+        print(longest_cities)
+        print(key)
 
     def display_menu(self):
         self.view.display_menu(self.MENU_OPTIONS)
@@ -162,14 +165,12 @@ class UnitController():
                 exit()
 
 
-
 unit_dao = UnitDao()
 voivodeship = unit_dao.import_data()
 unit_controller = UnitController()
-
-unit_controller.start()
-unit_controller.list_statistics(voivodeship)
+#unit_controller.start()
+#unit_controller.list_statistics(voivodeship)
 unit_controller.count_rgmis(voivodeship)
 unit_controller.get_cities(voivodeship)
 
-UnitView.display_menu(UnitController.MENU_OPTIONS)
+#UnitView.display_menu(UnitController.MENU_OPTIONS)
