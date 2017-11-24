@@ -1,3 +1,5 @@
+import sys
+import os
 from unit_view import UnitView
 from unit_dao import UnitDao
 from voivodeship_model import Voivodeship
@@ -6,6 +8,13 @@ from community_model import Community
 
 
 class UnitController():
+
+    MENU_OPTIONS = ["List statistics",
+                    "Display 3 cities with longest names",
+                    "Display county's name with the largest number of communities",
+                    "Display locations, that belong to more than one category",
+                    "Advanced search",
+                    "Exit program"]
 
     def __init__(self):
         self.unit_dao = UnitDao()
@@ -28,7 +37,7 @@ class UnitController():
         list_stats.append([str(number_of_city_counties), "miasto na prawach powiatu"])
         list_stats.append([str(number_of_delegatura), "delegatura"])
         
-        self.unit_view.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
+        #self.unit_view.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
         
         return list_stats
         '''print(str(NUMBER_OF_VOIVODESHIPS) + " | wojewódźtwo")
@@ -105,7 +114,7 @@ class UnitController():
             if int(cities_dict[key]) > longest_cities:
                 longest_cities = int(cities_dict[key])
                 community = key
-                print(key)
+                #print(key)
                 #print(community.name)
 
 
@@ -126,15 +135,41 @@ class UnitController():
             max_len_city = cities_len[0]
         print(max_len_city)"""        
 
+    def display_menu(self):
+        self.view.display_menu(self.MENU_OPTIONS)
 
-  
+    def start(self):
+        to_continue = True
+        correct_choices = ["1", "2", "3", "4", "5", "6"]
+        while to_continue:
+            UnitView.display_menu(self.MENU_OPTIONS)
+            user_choice = self.unit_view.user_input("Enter your choice (1, 2, 3, 4, 5, 6): ")
+            os.system("clear")
+            if user_choice not in correct_choices:
+                to_continue = False
+            elif user_choice == "1":
+                list_stats = unit_controller.list_statistics(voivodeship)
+                self.unit_view.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
+            elif user_choice == "2":
+                pass
+            elif user_choice == "3":
+                pass
+            elif user_choice == "4":
+                pass
+            elif user_choice == "5":
+                pass
+            elif user_choice == "6":
+                exit()
 
 
 
 unit_dao = UnitDao()
 voivodeship = unit_dao.import_data()
 unit_controller = UnitController()
+
+unit_controller.start()
 unit_controller.list_statistics(voivodeship)
 unit_controller.count_rgmis(voivodeship)
 unit_controller.get_cities(voivodeship)
-#unit_controller.get_longest_cities_names(unit_controller.get_cities(voivodeship))
+
+UnitView.display_menu(UnitController.MENU_OPTIONS)

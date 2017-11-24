@@ -1,7 +1,7 @@
 from prettytable import PrettyTable
 
 
-class UnitView(): #TBD
+class UnitView():  # TBD
 
     def display_statistics(self, statistics, header):
         ptable = PrettyTable()
@@ -9,3 +9,16 @@ class UnitView(): #TBD
         for row in statistics:
             ptable.add_row(row)
         print(ptable)
+
+    @staticmethod
+    def display_menu(collection):
+        for number, element in enumerate(collection):
+            print(number + 1, element)
+
+    def user_input(self, text=''):
+        user_input = input(text)
+        return user_input
+
+    @staticmethod
+    def display_text(text=''):
+        print(text)

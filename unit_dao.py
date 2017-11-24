@@ -32,39 +32,39 @@ class UnitDao():
         for unit in unit_collection:
             if unit[type_idx] == "województwo":
                 voivodeship = Voivodeship(unit[name_idx], unit[voivodeship_uid_idx])
-                print("dodalam województwo")
+                #print("dodalam województwo")
                 test_number_rgmi += 1
             elif unit[type_idx] in county_types:
                 county = County(unit[name_idx], unit[county_uid_idx], unit[type_idx])
                 voivodeship.add_county(county)
-                print("dodalam powiat lub miasto na prawach powiatu")
+                #print("dodalam powiat lub miasto na prawach powiatu")
                 test_number_rgmi += 1
             elif unit[type_idx] in rgmi_types:
                 if unit[community_uid_idx] not in voivodeship.county_dict[unit[county_uid_idx]].community_dict.keys():
-                    print("nie ma takiej gminy więc tworzę")
+                    #print("nie ma takiej gminy więc tworzę")
                     community = Community(unit[type_idx], unit[idx_rgmi], unit[name_idx], unit[community_uid_idx])
                     voivodeship.county_dict[unit[county_uid_idx]].add_community(community)
                     test_number_rgmi += 1
                 else:
-                    print("jest już taka gmina, więc dodaje tylko typ")
+                    #print("jest już taka gmina, więc dodaje tylko typ")
                     voivodeship.county_dict[unit[county_uid_idx]].community_dict[unit[community_uid_idx]].add_rgmi_type(unit[type_idx], unit[idx_rgmi])
                     test_number_rgmi += 1
             else:
                 pass  
-        print(test_number_rgmi)
+        #print(test_number_rgmi)
         return voivodeship
 
 
 unit_dao = UnitDao()
 voivodeship = unit_dao.import_data()
 
-print("Województwa: --------------------------------")
-print(voivodeship)
-print("Powiaty: --------------------------------")
-for county_key, county_value in voivodeship.county_dict.items():
-    print(county_key + " " + county_value.name)
-print("Gminy: --------------------------------")
-for county_key, county_value in voivodeship.county_dict.items():
-    for community_key, community_value in county_value.community_dict.items():
-        print(community_key + " " + community_value.name)
+#print("Województwa: --------------------------------")
+#print(voivodeship)
+#print("Powiaty: --------------------------------")
+#for county_key, county_value in voivodeship.county_dict.items():
+#    print(county_key + " " + county_value.name)
+#print("Gminy: --------------------------------")
+#for county_key, county_value in voivodeship.county_dict.items():
+#    for community_key, community_value in county_value.community_dict.items():
+#        print(community_key + " " + community_value.name)
 
