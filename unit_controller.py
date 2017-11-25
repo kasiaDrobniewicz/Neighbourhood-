@@ -112,6 +112,14 @@ class UnitController():
 
         return county_with_largest_number_of_communities
 
+    def get_locations(self, voivodeship):
+        locations = []
+        for county_key, county in voivodeship.county_dict.items():
+            for community_key, community in county.community_dict.items():
+                if len(community.rgmi_dict.keys()) > 1:
+                    locations.append(community.name)
+        return locations
+
     def advanced_search(self, voivodeship, search_string):
         search_results = []
         VOIVODESHIP_TYPE = "województwo"
@@ -153,7 +161,10 @@ class UnitController():
                 county_with_largest_number_of_communities = self.get_county_with_largest_number_of_communities(voivodeship)
                 UnitView.display_text("County with the largest number of communities is:\n" + county_with_largest_number_of_communities + "\n-------------------------")
             elif user_choice == "4":
-                pass
+                locations = self.get_locations(voivodeship)
+                UnitView.display_text("Locations that belong to more than one category are:")
+                UnitView.display_collection(locations)
+                UnitView.display_text("-------------------------")
             elif user_choice == "5":
                 search_string = UnitView.user_input("Searching for: ")
                 search_results = self.advanced_search(voivodeship, search_string)
@@ -171,6 +182,7 @@ unit_controller.count_rgmis(voivodeship)
 unit_controller.get_cities(voivodeship)
 unit_controller.get_county_with_largest_number_of_communities(voivodeship)
 
+#print(unit_controller.get_locations(voivodeship))
 #voivodeship = [["2", "5"], ["1", "5"], ["2", "4"], ["1", "1"], ["5", "5"]]
 #unit_controller.advanced_search(voivodeship, "Nowy")
 UnitView.display_collection(UnitController.MENU_OPTIONS)
