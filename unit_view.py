@@ -3,7 +3,8 @@ from prettytable import PrettyTable
 
 class UnitView():  # TBD
 
-    def display_statistics(self, statistics, header):
+    @staticmethod
+    def display_statistics(statistics, header):
         ptable = PrettyTable()
         ptable.field_names = header
         for row in statistics:
@@ -15,7 +16,8 @@ class UnitView():  # TBD
         for number, element in enumerate(collection):
             print(number + 1, element)
 
-    def user_input(self, text=''):
+    @staticmethod
+    def user_input(text=''):
         user_input = input(text)
         return user_input
 

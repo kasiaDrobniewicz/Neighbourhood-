@@ -36,9 +36,7 @@ class UnitController():
         list_stats.append([str(number_of_miasto), "miasto"])
         list_stats.append([str(number_of_city_counties), "miasto na prawach powiatu"])
         list_stats.append([str(number_of_delegatura), "delegatura"])
-        
-        #self.unit_view.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
-        
+               
         return list_stats
         '''print(str(NUMBER_OF_VOIVODESHIPS) + " | wojewódźtwo")
         print(str(number_of_counties) + " | powiaty")
@@ -114,6 +112,23 @@ class UnitController():
 
         return county_with_largest_number_of_communities
 
+    def advanced_search(self, voivodeship, search_string):
+        search_results = []
+        VOIVODESHIP_TYPE = "województwo"
+        if search_string in voivodeship.name:
+            search_results.append([voivodeship.name, VOIVODESHIP_TYPE])
+        for county_key, county in voivodeship.county_dict.items():
+            if search_string in county.name:
+                search_results.append([county.name, county.county_type])
+            for community_key, community in county.community_dict.items():
+                if search_string in community.name:
+                    for rgmi_key, rgmi_type in community.rgmi_dict.items():
+                        search_results.append([community.name, rgmi_type])
+        search_results.sort(key=lambda tup: tup[1])
+        search_results.sort(key=lambda tup: tup[0])
+
+        return search_results
+
     def display_menu(self):
         self.view.display_menu(self.MENU_OPTIONS)
 
@@ -122,13 +137,13 @@ class UnitController():
         correct_choices = ["1", "2", "3", "4", "5", "6"]
         while to_continue:
             UnitView.display_collection(self.MENU_OPTIONS)
-            user_choice = self.unit_view.user_input("Enter your choice (1, 2, 3, 4, 5, 6): ")
-            os.system("clear")
+            user_choice = UnitView.user_input("Enter your choice (1, 2, 3, 4, 5, 6): ")
+            #os.system("clear")
             if user_choice not in correct_choices:
                 to_continue = False
             elif user_choice == "1":
                 list_stats = unit_controller.list_statistics(voivodeship)
-                self.unit_view.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
+                UnitView.display_statistics(list_stats, ["", "MAŁOPOLSKA"])
             elif user_choice == "2":
                 longest_cities = self.get_cities(voivodeship)
                 UnitView.display_text("Three longest cities are:")
@@ -140,7 +155,9 @@ class UnitController():
             elif user_choice == "4":
                 pass
             elif user_choice == "5":
-                pass
+                search_string = UnitView.user_input("Searching for: ")
+                search_results = self.advanced_search(voivodeship, search_string)
+                UnitView.display_statistics(search_results, ["LOCATION", "TYPE"])
             elif user_choice == "6":
                 exit()
 
@@ -154,4 +171,6 @@ unit_controller.count_rgmis(voivodeship)
 unit_controller.get_cities(voivodeship)
 unit_controller.get_county_with_largest_number_of_communities(voivodeship)
 
+#voivodeship = [["2", "5"], ["1", "5"], ["2", "4"], ["1", "1"], ["5", "5"]]
+#unit_controller.advanced_search(voivodeship, "Nowy")
 UnitView.display_collection(UnitController.MENU_OPTIONS)
