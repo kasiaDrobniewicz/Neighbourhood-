@@ -3,6 +3,8 @@ from unit_model import Unit
 
 class Voivodeship(Unit):
 
+    VOIVODESHIP_TYPE = "województwo"
+
     def __init__(self, name, uid):
         super().__init__(name, uid)
         self.county_dict = {}

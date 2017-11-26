@@ -1,15 +1,13 @@
-from prettytable import PrettyTable
+class UnitView():
 
+    MENU_OPTIONS = ["List statistics",
+                    "Display 3 cities with longest names",
+                    "Display county's name with the largest number of communities",
+                    "Display locations, that belong to more than one category",
+                    "Advanced search",
+                    "Exit program"]
 
-class UnitView():  # TBD
-
-    @staticmethod
-    def display_statistics(statistics, header):
-        ptable = PrettyTable()
-        ptable.field_names = header
-        for row in statistics:
-            ptable.add_row(row)
-        print(ptable)
+    SEPARATOR = "-------------------------"
 
     @staticmethod
     def display_collection(collection):
@@ -20,7 +18,3 @@ class UnitView():  # TBD
     def user_input(text=''):
         user_input = input(text)
         return user_input
-
-    @staticmethod
-    def display_text(text=''):
-        print(text)
